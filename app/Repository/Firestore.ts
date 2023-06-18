@@ -45,6 +45,7 @@ export default class Database {
 
   public async add(data) {
     const { id = null } = data
+    console.log('id', id)
     try {
       let docRef
       if (id) {
