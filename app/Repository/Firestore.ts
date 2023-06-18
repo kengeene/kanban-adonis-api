@@ -1,15 +1,31 @@
 const { db } = require('./Firebase')
 
-class Database {
-  constructor(collection) {
+export default class Database {
+  public collection: any
+  constructor(collection: String) {
     this.collection = collection
   }
 
-  async index() {
-    return await db.collection(this.collection).get()
+  public async index() {
+    return new Promise((resolve, reject) => {
+      db.collection(this.collection)
+        .get()
+        .then((querySnapshot) => {
+          let records: any = []
+          querySnapshot.forEach((snapshot) => {
+            let record = snapshot.data()
+            records.push(record)
+          })
+
+          resolve(records)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   }
 
-  async findById(id) {
+  public async findById(id) {
     try {
       const result = await db.collection(this.collection).doc(id).get()
       const user = result.data()
@@ -23,30 +39,30 @@ class Database {
     }
   }
 
-  async find(id) {
+  public async find(id) {
     return await db.collection(this.collection).doc(id).get()
   }
 
-  async add(data) {
-    const { uid = null } = data
+  public async add(data) {
+    const { id = null } = data
     try {
       let docRef
-      if (uid) {
-        docRef = db.collection(this.collection).doc(uid)
+      if (id) {
+        docRef = db.collection(this.collection).doc(id)
       } else {
         docRef = db.collection(this.collection).doc()
       }
-      const document = await docRef.set({
+      await docRef.set({
         ...data,
         dateCreated: new Date(),
       })
-      return document
+      return docRef.id
     } catch (error) {
       throw `Error on the DB ${error}`
     }
   }
 
-  async update({ id, data }) {
+  public async update({ id, data }) {
     try {
       const docRef = db.collection(this.collection).doc(id)
 
@@ -64,4 +80,4 @@ class Database {
   }
 }
 
-module.exports = Database
+// module.exports = Database
