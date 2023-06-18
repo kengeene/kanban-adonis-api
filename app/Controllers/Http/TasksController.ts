@@ -14,6 +14,35 @@ export default class TasksController {
     }
   }
 
+  public async getTypes({ response }: HttpContextContract) {
+    try {
+      // Retrieve all tasks from the Firebase database
+      const taskTypes = ['Bug', 'Feature']
+      return response.json(taskTypes)
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ message: 'An error occurred while retrieving task types.' })
+    }
+  }
+
+  public async getStatuses({ response }: HttpContextContract) {
+    try {
+      // Retrieve all tasks from the Firebase database
+      const taskStatuses = [
+        { id: 1, status: 'Pending' },
+        { id: 2, status: 'In Progress' },
+        { id: 3, status: 'In QA' },
+        { id: 4, status: 'Done' },
+      ]
+      return response.json(taskStatuses)
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ message: 'An error occurred while retrieving task statues.' })
+    }
+  }
+
   public async create({ request, response }: HttpContextContract) {
     try {
       // Get the task data from the request body
