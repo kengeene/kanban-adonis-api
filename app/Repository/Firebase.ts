@@ -9,13 +9,13 @@ const admin = require('firebase-admin')
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG)
+const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG!)
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
 // Initialize Firebase Admin
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT!)
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 })
